@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a48bba-1e0a-4ce5-9a30-59e69bd2d0d8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/DSA.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Note.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/binary_serach.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/algorithms/recursion.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/algorithms/selection-sort.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/selection_sort.py" afterDir="false" />
-    </list>
+    <list default="true" id="96a48bba-1e0a-4ce5-9a30-59e69bd2d0d8" name="Changes" comment="DSA algorithm visualizer" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,6 +21,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/TechDeitySpark/DSA.git",
+    "accountId": "9ec3aa4f-e444-42c3-a9b2-73661486fc70"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -84,12 +77,33 @@
       <updated>1751826051040</updated>
       <workItem from="1751826052465" duration="669000" />
       <workItem from="1751826817796" duration="2397000" />
-      <workItem from="1752093871837" duration="2750000" />
+      <workItem from="1752093871837" duration="3249000" />
     </task>
+    <task id="LOCAL-00001" summary="DSA algorithm visualizer">
+      <option name="closed" value="true" />
+      <created>1752097357400</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1752097357400</updated>
+    </task>
+    <task id="LOCAL-00002" summary="DSA algorithm visualizer">
+      <option name="closed" value="true" />
+      <created>1752097395055</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1752097395055</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="DSA algorithm visualizer" />
+    <option name="LAST_COMMIT_MESSAGE" value="DSA algorithm visualizer" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/DSA$selection_sort.coverage" NAME="selection_sort Coverage Results" MODIFIED="1752094556631" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
