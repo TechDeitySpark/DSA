@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selection Sort Visualizer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 900px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .arrays-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .array-section {
+            flex: 1;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+        }
+
+        .array-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #495057;
+        }
+
+        .array-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            min-height: 60px;
+        }
+
+        .array-item {
+            background: #007bff;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .array-item.smallest {
+            background: #dc3545;
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(220, 53, 69, 0.3);
+        }
+
+        .array-item.current-smallest {
+            background: #28a745;
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .array-item.comparing {
+            background: #ffc107;
+            color: #212529;
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        .array-item.current-smallest {
+            background: #28a745;
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .search-info {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #856404;
+            font-weight: bold;
+            text-align: center;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .function-flow {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .function-call {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .function-call.active {
+            background: #fff3e0;
+            border-color: #ff9800;
+            animation: glow 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 5px #ff9800; }
+            to { box-shadow: 0 0 20px #ff9800; }
+        }
+
+        .function-name {
+            font-weight: bold;
+            color: #1976d2;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .function-call.active .function-name {
+            color: #f57c00;
+        }
+
+        .function-params {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .function-action {
+            color: #333;
+            font-size: 0.95em;
+            line-height: 1.4;
+        }
+
+        .variable-display {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+
+        .variable-name {
+            font-weight: bold;
+            color: #d32f2f;
+        }
+
+        .variable-value {
+            color: #1976d2;
+        }
+
+        .code-highlight {
+            background: #ffeb3b;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .step-detail {
+            background: #e8f5e8;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .controls {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 0 10px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,123,255,0.4);
+        }
+
+        .btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .info {
+            background: #e7f3ff;
+            border: 2px solid #b8daff;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            color: #004085;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .step-counter {
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 20px;
+        }
+
+        .algorithm-explanation {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 5px solid #007bff;
+        }
+
+        .algorithm-explanation h3 {
+            color: #007bff;
+            margin-top: 0;
+        }
+
+        .code-snippet {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Selection Sort Visualizer</h1>
+
+        <div class="step-counter">
+            <span id="stepCounter">Ready to start!</span>
+        </div>
+
+        <div class="search-info" id="searchInfo">
+            Click "Start Sort" to begin the step-by-step process!
+        </div>
+
+        <div class="function-flow" id="functionFlow">
+            <h3>📋 Function Call Flow</h3>
+            <div id="functionCalls">
+                <div class="step-detail">Ready to start! Click "Start Sort" to see how the functions work together.</div>
+            </div>
+        </div>
+
+        <div class="arrays-container">
+            <div class="array-section">
+                <div class="array-title">📋 Original Array (being sorted)</div>
+                <div class="array-display" id="originalArray"></div>
+            </div>
+            <div class="array-section">
+                <div class="array-title">✅ Sorted Array (result)</div>
+                <div class="array-display" id="sortedArray"></div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="startBtn" onclick="startSort()">🚀 Start Sort</button>
+            <button class="btn" id="nextBtn" onclick="nextStep()" disabled>➡️ Next Step</button>
+            <button class="btn" id="autoBtn" onclick="autoSort()">⚡ Auto Sort</button>
+            <button class="btn" id="resetBtn" onclick="resetSort()">🔄 Reset</button>
+        </div>
+
+        <div class="info" id="infoBox">
+            <strong>How Selection Sort Works:</strong><br>
+            1. Find the smallest element in the unsorted array<br>
+            2. Remove it and add it to the sorted array<br>
+            3. Repeat until the original array is empty<br><br>
+            Click "Start Sort" to begin the visualization!
+        </div>
+
+        <div class="algorithm-explanation">
+            <h3>🧠 Your Algorithm Breakdown:</h3>
+            <p><strong>selectionSort(arr):</strong> Creates a new array and repeatedly finds the smallest element from the remaining items.</p>
+            <p><strong>findSmallest(arr):</strong> Scans through the array to find the index of the smallest element.</p>
+
+            <div class="code-snippet">
+def selectionSort(arr):
+    newArr = []
+    copiedArr = list(arr)
+    for i in range(len(copiedArr)):
+        smallest = findSmallest(copiedArr)
+        newArr.append(copiedArr.pop(smallest))
+    return newArr</div>
+
+            <p><strong>Time Complexity:</strong> O(n²) - We scan the array n times, each scan takes O(n) time</p>
+            <p><strong>Space Complexity:</strong> O(n) - We create a new array for the result</p>
+        </div>
+    </div>
+
+    <script>
+        let originalData = [54, 26, 93, 17, 77, 31, 44, 55, 20];
+        let workingArray = [];
+        let sortedArray = [];
+        let currentStep = 0;
+        let isRunning = false;
+        let autoInterval;
+        let comparingIndex = -1;
+        let smallestIndex = -1;
+        let currentSmallest = null;
+        let searchStep = 0;
+        let isSearching = false;
+        let functionCalls = [];
+
+        function initializeArrays() {
+            workingArray = [...originalData];
+            sortedArray = [];
+            currentStep = 0;
+            comparingIndex = -1;
+            smallestIndex = -1;
+            currentSmallest = null;
+            searchStep = 0;
+            isSearching = false;
+            functionCalls = [];
+            displayArrays();
+            updateInfo("Ready to start! Click 'Start Sort' to begin.");
+            updateSearchInfo("Click 'Start Sort' to begin the step-by-step process!");
+            updateFunctionFlow();
+        }
+
+        function displayArrays() {
+            const originalDiv = document.getElementById('originalArray');
+            const sortedDiv = document.getElementById('sortedArray');
+
+            // Display working array
+            originalDiv.innerHTML = '';
+            workingArray.forEach((num, index) => {
+                const item = document.createElement('div');
+                item.className = 'array-item';
+                item.textContent = num;
+
+                if (index === comparingIndex) {
+                    item.classList.add('comparing');
+                }
+                if (index === smallestIndex && !isSearching) {
+                    item.classList.add('smallest');
+                }
+                if (index === smallestIndex && isSearching) {
+                    item.classList.add('current-smallest');
+                }
+
+                originalDiv.appendChild(item);
+            });
+
+            // Display sorted array
+            sortedDiv.innerHTML = '';
+            sortedArray.forEach(num => {
+                const item = document.createElement('div');
+                item.className = 'array-item';
+                item.textContent = num;
+                sortedDiv.appendChild(item);
+            });
+
+            // Update step counter
+            document.getElementById('stepCounter').textContent =
+                `Step ${currentStep} of ${originalData.length}`;
+        }
+
+        function findSmallest(arr) {
+            let smallest = arr[0];
+            let smallestIndex = 0;
+
+            for (let i = 1; i < arr.length; i++) {
+                if (arr[i] < smallest) {
+                    smallest = arr[i];
+                    smallestIndex = i;
+                }
+            }
+            return smallestIndex;
+        }
+
+        function startSort() {
+            if (workingArray.length === 0) {
+                initializeArrays();
+            }
+
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('nextBtn').disabled = false;
+            isRunning = true;
+
+            // Initialize the function flow
+            functionCalls = [{
+                name: "selectionSort",
+                params: `[${originalData.join(', ')}]`,
+                action: `📋 <span class="code-highlight">def selectionSort(arr):</span><br>🔧 <span class="code-highlight">newArr = []</span><br>🔧 <span class="code-highlight">copiedArr = list(arr)</span><br>Starting with copiedArr = [${workingArray.join(', ')}]`,
+                active: true
+            }];
+
+            updateInfo("Sorting started! Click 'Next Step' to see how the functions work together.");
+            updateSearchInfo("selectionSort() function called. Ready to start the main loop!");
+            updateFunctionFlow();
+        }
+
+        function nextStep() {
+            if (workingArray.length === 0) {
+                updateInfo("🎉 Sorting complete! The array has been sorted using selection sort.");
+                updateSearchInfo("All elements have been processed. The array is now fully sorted!");
+
+                functionCalls.push({
+                    name: "selectionSort",
+                    params: "Original array completed",
+                    action: `🎉 <span class="code-highlight">return newArr</span><br>Final sorted array: [${sortedArray.join(', ')}]`,
+                    active: true
+                });
+                updateFunctionFlow();
+
+                document.getElementById('nextBtn').disabled = true;
+                document.getElementById('startBtn').disabled = false;
+                isRunning = false;
+                return;
+            }
+
+            if (!isSearching) {
+                // Start the selectionSort iteration
+                functionCalls.push({
+                    name: "selectionSort",
+                    params: `Iteration ${currentStep + 1}`,
+                    action: `📋 <span class="code-highlight">for i in range(len(copiedArr)):</span><br>Starting iteration ${currentStep + 1} of ${originalData.length}<br>Current copiedArr: [${workingArray.join(', ')}]`,
+                    active: false
+                });
+
+                // Call findSmallest function
+                functionCalls.push({
+                    name: "findSmallest",
+                    params: `[${workingArray.join(', ')}]`,
+                    action: `🔍 <span class="code-highlight">smallest = arr[0]</span><br>🔍 <span class="code-highlight">smallest_index = 0</span><br>Initialize: smallest = ${workingArray[0]}, smallest_index = 0`,
+                    active: true
+                });
+
+                isSearching = true;
+                searchStep = 0;
+                smallestIndex = 0;
+                currentSmallest = workingArray[0];
+                comparingIndex = 0;
+
+                updateInfo(`Starting findSmallest([${workingArray.join(', ')}])...`);
+                updateSearchInfo(`🔍 findSmallest() called with ${workingArray.length} elements. Initialized smallest = ${currentSmallest}, smallest_index = 0`);
+                updateFunctionFlow();
+                displayArrays();
+                return;
+            }
+
+            // Continue searching through the array
+            searchStep++;
+
+            if (searchStep < workingArray.length) {
+                comparingIndex = searchStep;
+
+                // Show the comparison step
+                functionCalls[functionCalls.length - 1] = {
+                    name: "findSmallest",
+                    params: `[${workingArray.join(', ')}]`,
+                    action: `🔄 <span class="code-highlight">for i in range(1, len(arr)):</span><br>Comparing arr[${searchStep}] = ${workingArray[searchStep]} with smallest = ${currentSmallest}<br><span class="code-highlight">if arr[${searchStep}] < smallest:</span>`,
+                    active: true
+                };
+
+                if (workingArray[searchStep] < currentSmallest) {
+                    currentSmallest = workingArray[searchStep];
+                    smallestIndex = searchStep;
+
+                    functionCalls[functionCalls.length - 1].action += `<br>✅ ${workingArray[searchStep]} < ${workingArray[smallestIndex === searchStep ? 0 : smallestIndex]}, so update:<br><span class="code-highlight">smallest = ${currentSmallest}</span><br><span class="code-highlight">smallest_index = ${smallestIndex}</span>`;
+                    updateSearchInfo(`🔄 Found smaller element! Updated smallest = ${currentSmallest}, smallest_index = ${smallestIndex}`);
+                } else {
+                    functionCalls[functionCalls.length - 1].action += `<br>❌ ${workingArray[searchStep]} >= ${currentSmallest}, no update needed`;
+                    updateSearchInfo(`📊 ${workingArray[searchStep]} >= ${currentSmallest}, keeping smallest = ${currentSmallest}`);
+                }
+
+                updateFunctionFlow();
+                displayArrays();
+            } else {
+                // Finished searching, return the index
+                functionCalls[functionCalls.length - 1] = {
+                    name: "findSmallest",
+                    params: `[${workingArray.join(', ')}]`,
+                    action: `✅ <span class="code-highlight">return smallest_index</span><br>Search complete! Returning index ${smallestIndex} (value: ${currentSmallest})`,
+                    active: true
+                };
+
+                // Back to selectionSort
+                functionCalls.push({
+                    name: "selectionSort",
+                    params: `Continue iteration ${currentStep + 1}`,
+                    action: `📤 <span class="code-highlight">smallest = findSmallest(copiedArr)</span><br>Got smallest_index = ${smallestIndex} (value: ${currentSmallest})<br><span class="code-highlight">newArr.append(copiedArr.pop(${smallestIndex}))</span>`,
+                    active: true
+                });
+
+                isSearching = false;
+                comparingIndex = -1;
+
+                updateSearchInfo(`✅ findSmallest() returned index ${smallestIndex}. Moving element ${currentSmallest} to sorted array...`);
+                updateFunctionFlow();
+                displayArrays();
+
+                setTimeout(() => {
+                    // Move the smallest element to sorted array
+                    const smallest = workingArray.splice(smallestIndex, 1)[0];
+                    sortedArray.push(smallest);
+                    currentStep++;
+
+                    smallestIndex = -1;
+                    displayArrays();
+
+                    // Update the last function call to show completion
+                    functionCalls[functionCalls.length - 1].action += `<br>✅ Moved ${smallest} to newArr. newArr = [${sortedArray.join(', ')}]`;
+                    updateFunctionFlow();
+
+                    updateInfo(`Moved ${smallest} to sorted array. ${workingArray.length} elements remaining to sort.`);
+                    updateSearchInfo(workingArray.length > 0 ?
+                        `Ready for next iteration. Click 'Next Step' to continue.` :
+                        `Sorting complete! All elements have been processed.`);
+
+                    if (workingArray.length === 0) {
+                        nextStep(); // Trigger completion
+                    }
+                }, 1000);
+            }
+        }
+
+        function autoSort() {
+            if (!isRunning) {
+                startSort();
+            }
+
+            document.getElementById('autoBtn').disabled = true;
+            document.getElementById('nextBtn').disabled = true;
+
+            autoInterval = setInterval(() => {
+                if (workingArray.length === 0) {
+                    clearInterval(autoInterval);
+                    document.getElementById('autoBtn').disabled = false;
+                    return;
+                }
+                nextStep();
+            }, 2000);
+        }
+
+        function resetSort() {
+            clearInterval(autoInterval);
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('nextBtn').disabled = true;
+            document.getElementById('autoBtn').disabled = false;
+            isRunning = false;
+            functionCalls = [];
+            initializeArrays();
+        }
+
+        function updateInfo(message) {
+            document.getElementById('infoBox').innerHTML = `<strong>Current Status:</strong><br>${message}`;
+        }
+
+        function updateSearchInfo(message) {
+            document.getElementById('searchInfo').innerHTML = message;
+        }
+
+        function updateFunctionFlow() {
+            const flowDiv = document.getElementById('functionCalls');
+
+            if (functionCalls.length === 0) {
+                flowDiv.innerHTML = '<div class="step-detail">Ready to start! Click "Start Sort" to see how the functions work together.</div>';
+                return;
+            }
+
+            let html = '';
+            functionCalls.forEach((call, index) => {
+                const isActive = call.active ? 'active' : '';
+                html += `
+                    <div class="function-call ${isActive}">
+                        <div class="function-name">${call.name}()</div>
+                        <div class="function-params">Parameters: ${call.params}</div>
+                        <div class="function-action">${call.action}</div>
+                    </div>
+                `;
+            });
+
+            flowDiv.innerHTML = html;
+
+            // Scroll to the bottom to show the latest function call
+            flowDiv.scrollTop = flowDiv.scrollHeight;
+        }
+
+        // Initialize on page load
+        initializeArrays();
+    </script>
+</body>
+</html>

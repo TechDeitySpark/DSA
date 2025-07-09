@@ -1,0 +1,22 @@
+Binary search works under the following key conditions:
+1. **Sorted Data**
+    - The input array/list MUST be sorted (ascending or descending order)
+    - This is the most crucial requirement for binary search to work correctly
+
+2. **Random Access**
+    - The data structure must allow efficient random access (O(1) time)
+    - Arrays and array-based lists are ideal
+    - Not suitable for linked lists as they don't provide efficient random access
+
+3. **Size Considerations**
+    - Best for large datasets where linear search would be inefficient
+    - For very small datasets (less than ~10 elements), linear search might be faster due to less overhead
+
+4. **Memory Requirements**
+    - Works on data that fits in memory
+    - The data structure should be static (size doesn't change during search)
+
+**Time Complexity:**
+- Best case: O(1) (when middle element is the target)
+- Average case: O(log n)
+- Worst case: O(log n)
