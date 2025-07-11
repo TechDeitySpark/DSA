@@ -8,20 +8,70 @@
 </head>
 <body>
     <div class="container">
-        <h1>🔍 Binary Search Visualization</h1>
+        <h1>🔍 Binary Search Algorithm Visualization</h1>
+
         <div class="controls">
             <button class="btn-primary" onclick="generateArray()">Generate New Array</button>
             <input type="number" id="searchInput" placeholder="Enter number to search" style="padding: 10px; border-radius: 8px; border: 1px solid #ccc; width: 180px; font-size: 16px;">
-            <button class="btn-secondary" onclick="startSearch()">Start Search</button>
+            <button class="btn-secondary" onclick="startSearch()" id="searchBtn">Start Search</button>
             <button class="btn-success" onclick="resetInfo()">Reset</button>
         </div>
-        <div class="visualization" id="visualization"></div>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <h3 style="color: #4a5568; margin-bottom: 20px;">📊 Visual Representation</h3>
+                <div class="visualization" id="visualization"></div>
+            </div>
+            <div class="right-panel">
+                <h3 style="color: #4a5568; margin-bottom: 20px;">🐍 Python Implementation</h3>
+                <div class="code-section">
+                    <div class="code-header">Binary Search Implementation</div>
+                    <pre id="binarysearch-code"><span class="keyword">def</span> <span class="function">binary_search</span>(arr, target):
+    left, right = 0, <span class="function">len</span>(arr) - 1
+    <span class="keyword">while</span> left <= right:
+        mid = (left + right) // 2
+        <span class="keyword">if</span> arr[mid] == target:
+            <span class="keyword">return</span> mid
+        <span class="keyword">elif</span> arr[mid] < target:
+            left = mid + 1
+        <span class="keyword">else</span>:
+            right = mid - 1
+    <span class="keyword">return</span> -1
+
+<span class="comment"># Usage example:</span>
+<span class="comment"># arr = [11, 22, 25, 34, 64, 90]</span>
+<span class="comment"># index = binary_search(arr, 34)</span>
+<span class="comment"># print(index)  # Output: 3</span></pre>
+                </div>
+                <div class="code-section">
+                    <div class="code-header">Key Concepts Explained</div>
+                    <div style="color: #e2e8f0; font-family: 'Courier New', monospace; font-size: 14px; line-height: 1.6;">
+                        <div style="margin-bottom: 15px;">
+                            <strong style="color: #f6ad55;">Time Complexity:</strong><br>
+                            • <span style="color: #68d391;">O(log n)</span> - very fast for large arrays!
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <strong style="color: #f6ad55;">Space Complexity:</strong><br>
+                            • <span style="color: #68d391;">O(1)</span> for iterative version
+                        </div>
+                        <div>
+                            <strong style="color: #f6ad55;">Why Binary Search is Powerful:</strong><br>
+                            • Extremely efficient for searching sorted data<br>
+                            • Simple logic, easy to implement<br>
+                            • Used in databases, libraries, and more
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="info-panel">
             <div class="step-info" id="stepInfo">Ready! Enter a number and click 'Start Search'.</div>
             <div class="explanation" id="explanation">
                 Binary Search works by repeatedly dividing the sorted array in half, comparing the target value to the middle element.
             </div>
         </div>
+
         <div class="algorithm-info">
             <h3>🧠 How Binary Search Works:</h3>
             <ul>
