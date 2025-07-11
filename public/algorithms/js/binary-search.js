@@ -83,8 +83,16 @@ async function startSearch() {
     isRunning = false;
 }
 
-function goBack() {
-    window.location.href = '../../index.html';
-}
-
-window.onload = generateArray;
+window.onload = function() {
+    generateArray();
+    // Attach event listeners for accessibility
+    document.getElementById('searchBtn').onclick = startSearch;
+    document.getElementById('searchInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') startSearch();
+    });
+    document.querySelector('.btn-primary').onclick = generateArray;
+    document.querySelector('.btn-success').onclick = resetInfo;
+    if (typeof goBack === 'undefined') {
+        window.goBack = function() { window.location.href = '../../index.html'; };
+    }
+};

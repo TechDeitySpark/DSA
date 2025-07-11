@@ -5,6 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Binary Search Visualization</title>
     <link rel="stylesheet" href="../css/binary-search.css">
+    <style>
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .left-panel, .right-panel {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .code-section {
+            background: #2d3748;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            overflow-x: auto;
+        }
+        .code-header {
+            color: #cbd5e0;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .code-header::before {
+            content: "🐍";
+            font-size: 16px;
+        }
+        pre {
+            color: #e2e8f0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+            white-space: pre-wrap;
+        }
+        .keyword { color: #63b3ed; font-weight: bold; }
+        .string { color: #68d391; }
+        .comment { color: #a0aec0; font-style: italic; }
+        .function { color: #f6ad55; }
+        .number { color: #fbb6ce; }
+        @media (max-width: 1200px) {
+            .main-content { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .controls { flex-direction: column; align-items: center; }
+            .bar { width: 25px; margin: 1px; font-size: 10px; }
+            .visualization { height: 120px; }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -90,5 +145,11 @@
     </div>
     <button class="go-back" onclick="goBack()">← Back to Index</button>
     <script src="../js/binary-search.js"></script>
+    <script>
+        // Fallback: If JS is not loaded, show a warning
+        if (!window.generateArray || !window.startSearch) {
+            document.getElementById('stepInfo').textContent = 'JavaScript failed to load. Please check the file path or refresh.';
+        }
+    </script>
 </body>
 </html>
