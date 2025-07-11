@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MergeSort Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a5568;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .left-panel {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .right-panel {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .visualization {
+            display: flex;
+            justify-content: center;
+            align-items: end;
+            height: 250px;
+            margin: 20px 0;
+            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bar {
+            width: 30px;
+            margin: 1px;
+            background: linear-gradient(to top, #667eea, #764ba2);
+            border-radius: 5px 5px 0 0;
+            transition: all 0.5s ease;
+            position: relative;
+            display: flex;
+            align-items: end;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            font-size: 12px;
+        }
+
+        .bar.left-half {
+            background: linear-gradient(to top, #ff6b6b, #ee5a24);
+            transform: translateX(-5px);
+        }
+
+        .bar.right-half {
+            background: linear-gradient(to top, #4facfe, #00f2fe);
+            transform: translateX(5px);
+        }
+
+        .bar.merging {
+            background: linear-gradient(to top, #feca57, #ff9ff3);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(254, 202, 87, 0.5);
+        }
+
+        .bar.sorted {
+            background: linear-gradient(to top, #48cab2, #2dd4bf);
+            box-shadow: 0 0 10px rgba(72, 202, 178, 0.3);
+        }
+
+        .code-section {
+            background: #2d3748;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-header {
+            color: #cbd5e0;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .code-header::before {
+            content: "🐍";
+            font-size: 16px;
+        }
+
+        pre {
+            color: #e2e8f0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        .keyword {
+            color: #63b3ed;
+            font-weight: bold;
+        }
+
+        .string {
+            color: #68d391;
+        }
+
+        .comment {
+            color: #a0aec0;
+            font-style: italic;
+        }
+
+        .function {
+            color: #f6ad55;
+        }
+
+        .number {
+            color: #fbb6ce;
+        }
+
+        .info-panel {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .step-info {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        .explanation {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .grokking-diagram {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .diagram-title {
+            color: #4a5568;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .merge-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .merge-section {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .merge-section.left {
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .merge-section.right {
+            border-left: 4px solid #4facfe;
+        }
+
+        .merge-section.result {
+            border-left: 4px solid #48cab2;
+            background: linear-gradient(135deg, #fff, #e6fff9);
+        }
+
+        .merge-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .merge-values {
+            font-size: 14px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .tree-visualization {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .tree-level {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+            gap: 10px;
+        }
+
+        .tree-node {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #4a5568;
+            min-width: 80px;
+        }
+
+        .tree-node.dividing {
+            border-color: #ff6b6b;
+            background: linear-gradient(135deg, #fff, #ffe6e6);
+        }
+
+        .tree-node.merging {
+            border-color: #48cab2;
+            background: linear-gradient(135deg, #fff, #e6fff9);
+        }
+
+        .algorithm-info {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            grid-column: 1 / -1;
+        }
+
+        .algorithm-info h3 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .algorithm-info ul {
+            margin-left: 20px;
+            color: #666;
+        }
+
+        .algorithm-info li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .go-back {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .go-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .highlighted-line {
+            background: rgba(255, 255, 0, 0.2);
+            border-radius: 3px;
+            padding: 2px 5px;
+            margin: 0 -5px;
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .bar {
+                width: 25px;
+                margin: 1px;
+                font-size: 10px;
+            }
+
+            .visualization {
+                height: 200px;
+            }
+
+            .merge-visual {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 MergeSort Algorithm Visualization</h1>
+
+        <div class="controls">
+            <button class="btn-primary" onclick="generateArray()">Generate New Array</button>
+            <button class="btn-secondary" onclick="startSort()" id="sortBtn">Start MergeSort</button>
+            <button class="btn-success" onclick="reset()">Reset</button>
+        </div>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <h3 style="color: #4a5568; margin-bottom: 20px;">📊 Visual Representation</h3>
+                <div class="visualization" id="visualization"></div>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="comparisons">0</div>
+                        <div class="stat-label">Comparisons</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="merges">0</div>
+                        <div class="stat-label">Merges</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="steps">0</div>
+                        <div class="stat-label">Steps</div>
+                    </div>
+                </div>
+
+                <div class="grokking-diagram">
+                    <div class="diagram-title">📖 Grokking Algorithms Concept: Divide & Conquer</div>
+                    <div class="merge-visual">
+                        <div class="merge-section left">
+                            <div class="merge-label">LEFT HALF</div>
+                            <div class="merge-values">Sorted Sub-array</div>
+                        </div>
+                        <div class="merge-section right">
+                            <div class="merge-label">RIGHT HALF</div>
+                            <div class="merge-values">Sorted Sub-array</div>
+                        </div>
+                        <div class="merge-section result">
+                            <div class="merge-label">MERGED RESULT</div>
+                            <div class="merge-values">Combined & Sorted</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 15px; color: #666; font-size: 14px;">
+                        🎯 The key insight: Merging two sorted arrays is much easier than sorting one unsorted array!
+                    </p>
+                </div>
+
+                <div class="tree-visualization">
+                    <div class="diagram-title">🌳 Recursion Tree Structure</div>
+                    <div class="tree-level">
+                        <div class="tree-node" id="level0">[Original Array]</div>
+                    </div>
+                    <div class="tree-level">
+                        <div class="tree-node" id="level1-1">[Left Half]</div>
+                        <div class="tree-node" id="level1-2">[Right Half]</div>
+                    </div>
+                    <div class="tree-level">
+                        <div class="tree-node" id="level2-1">[LL]</div>
+                        <div class="tree-node" id="level2-2">[LR]</div>
+                        <div class="tree-node" id="level2-3">[RL]</div>
+                        <div class="tree-node" id="level2-4">[RR]</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <h3 style="color: #4a5568; margin-bottom: 20px;">🐍 Python Implementation</h3>
+
+                <div class="code-section">
+                    <div class="code-header">MergeSort Implementation</div>
+                    <pre id="mergesort-code"><span class="keyword">def</span> <span class="function">mergesort</span>(arr):
+    <span class="comment"># Base case: arrays with 0 or 1 element are already sorted</span>
+    <span class="keyword">if</span> <span class="function">len</span>(arr) <= <span class="number">1</span>:
+        <span class="keyword">return</span> arr
+
+    <span class="comment"># Divide: Find the middle point and divide array into two halves</span>
+    mid = <span class="function">len</span>(arr) // <span class="number">2</span>
+    left_half = arr[:mid]
+    right_half = arr[mid:]
+
+    <span class="comment"># Conquer: Recursively sort both halves</span>
+    left_sorted = <span class="function">mergesort</span>(left_half)
+    right_sorted = <span class="function">mergesort</span>(right_half)
+
+    <span class="comment"># Combine: Merge the sorted halves</span>
+    <span class="keyword">return</span> <span class="function">merge</span>(left_sorted, right_sorted)
+
+<span class="keyword">def</span> <span class="function">merge</span>(left, right):
+    <span class="comment"># Create empty result array</span>
+    result = []
+    i = j = <span class="number">0</span>
+
+    <span class="comment"># Compare elements from both arrays and merge in sorted order</span>
+    <span class="keyword">while</span> i < <span class="function">len</span>(left) <span class="keyword">and</span> j < <span class="function">len</span>(right):
+        <span class="keyword">if</span> left[i] <= right[j]:
+            result.<span class="function">append</span>(left[i])
+            i += <span class="number">1</span>
+        <span class="keyword">else</span>:
+            result.<span class="function">append</span>(right[j])
+            j += <span class="number">1</span>
+
+    <span class="comment"># Add remaining elements from left array</span>
+    <span class="keyword">while</span> i < <span class="function">len</span>(left):
+        result.<span class="function">append</span>(left[i])
+        i += <span class="number">1</span>
+
+    <span class="comment"># Add remaining elements from right array</span>
+    <span class="keyword">while</span> j < <span class="function">len</span>(right):
+        result.<span class="function">append</span>(right[j])
+        j += <span class="number">1</span>
+
+    <span class="keyword">return</span> result
+
+<span class="comment"># Usage example:</span>
+<span class="comment"># arr = [64, 34, 25, 12, 22, 11, 90]</span>
+<span class="comment"># sorted_arr = mergesort(arr)</span>
+<span class="comment"># print(sorted_arr)  # Output: [11, 12, 22, 25, 34, 64, 90]</span></pre>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header">Key Concepts Explained</div>
+                    <div style="color: #e2e8f0; font-family: 'Courier New', monospace; font-size: 14px; line-height: 1.6;">
+                        <div style="margin-bottom: 15px;">
+                            <strong style="color: #f6ad55;">Time Complexity:</strong><br>
+                            • All Cases: <span style="color: #68d391;">O(n log n)</span><br>
+                            • Guaranteed performance!
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <strong style="color: #f6ad55;">Space Complexity:</strong><br>
+                            • <span style="color: #68d391;">O(n)</span> for temporary arrays
+                        </div>
+                        <div>
+                            <strong style="color: #f6ad55;">Why MergeSort is Reliable:</strong><br>
+                            • Stable sort (preserves relative order)<br>
+                            • Predictable O(n log n) performance<br>
+                            • Works well for large datasets<br>
+                            • Parallelizable algorithm<br>
+                            • External sorting capability
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <div class="step-info" id="stepInfo">Ready to start! Click 'Start MergeSort' to begin the sorting process.</div>
+            <div class="explanation" id="explanation">
+                MergeSort is a divide-and-conquer algorithm that works by recursively dividing the array into smaller subarrays until each subarray has only one element. Then it merges these subarrays back together in sorted order.
+            </div>
+        </div>
+
+        <div class="algorithm-info">
+            <h3>🎯 How MergeSort Works (Grokking Algorithms Style):</h3>
+            <ul>
+                <li><strong>Base Case:</strong> Arrays with 0 or 1 elements are already sorted</li>
+                <li><strong>Divide:</strong> Split the array into two halves recursively</li>
+                <li><strong>Conquer:</strong> Recursively sort both halves</li>
+                <li><strong>Combine:</strong> Merge the two sorted halves into a single sorted array</li>
+            </ul>
+            <br>
+            <h3>🚀 Performance Characteristics:</h3>
+            <ul>
+                <li><strong>Best Case:</strong> O(n log n) - consistent performance regardless of input</li>
+                <li><strong>Average Case:</strong> O(n log n) - always the same time complexity</li>
+                <li><strong>Worst Case:</strong> O(n log n) - guaranteed performance!</li>
+                <li><strong>Space:</strong> O(n) - requires additional memory for temporary arrays</li>
+                <li><strong>Stability:</strong> Stable sort - maintains relative order of equal elements</li>
+            </ul>
+            <br>
+            <h3>🔄 Key Advantages:</h3>
+            <ul>
+                <li><strong>Predictable:</strong> Always O(n log n), no worst-case surprises</li>
+                <li><strong>Stable:</strong> Maintains relative order of equal elements</li>
+                <li><strong>Parallelizable:</strong> Can be easily parallelized for better performance</li>
+                <li><strong>External Sorting:</strong> Works well for sorting large files that don't fit in memory</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="go-back" onclick="goBack()">← Back to Index</button>
+
+    <script>
+        let array = [];
+        let isRunning = false;
+        let comparisons = 0;
+        let merges = 0;
+        let steps = 0;
+        let currentLine = -1;
+
+        function generateArray() {
+            if (isRunning) return;
+
+            array = [];
+            for (let i = 0; i < 8; i++) {
+                array.push(Math.floor(Math.random() * 120) + 20);
+            }
+
+            reset();
+            renderArray();
+        }
+
+        function renderArray() {
+            const visualization = document.getElementById('visualization');
+            visualization.innerHTML = '';
+
+            array.forEach((value, index) => {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.height = `${value}px`;
+                bar.textContent = value;
+                bar.id = `bar-${index}`;
+                visualization.appendChild(bar);
+            });
+        }
+
+        function highlightCodeLine(lineNumber) {
+            const code = document.getElementById('mergesort-code');
+            const lines = code.innerHTML.split('\n');
+
+            // Remove previous highlights
+            const newLines = lines.map(line => line.replace(/<span class="highlighted-line">(.*?)<\/span>/g, '$1'));
+
+            // Add new highlight
+            if (lineNumber >= 0 && lineNumber < newLines.length) {
+                newLines[lineNumber] = `<span class="highlighted-line">${newLines[lineNumber]}</span>`;
+            }
+
+            code.innerHTML = newLines.join('\n');
+        }
+
+        function reset() {
+            isRunning = false;
+            comparisons = 0;
+            merges = 0;
+            steps = 0;
+            currentLine = -1;
+            updateStats();
+            document.getElementById('sortBtn').disabled = false;
+            document.getElementById('stepInfo').textContent = "Ready to start! Click 'Start MergeSort' to begin the sorting process.";
+            document.getElementById('explanation').textContent = "MergeSort is a divide-and-conquer algorithm that works by recursively dividing the array into smaller subarrays until each subarray has only one element. Then it merges these subarrays back together in sorted order.";
+
+            // Remove all highlighting
+            document.querySelectorAll('.bar').forEach(bar => {
+                bar.className = 'bar';
+            });
+
+            // Reset tree visualization
+            document.querySelectorAll('.tree-node').forEach(node => {
+                node.className = 'tree-node';
+            });
+
+            highlightCodeLine(-1);
+        }
+
+        function updateStats() {
+            document.getElementById('comparisons').textContent = comparisons;
+            document.getElementById('merges').textContent = merges;
+            document.getElementById('steps').textContent = steps;
+        }
+
+        function updateInfo(stepText, explanationText) {
+            document.getElementById('stepInfo').textContent = stepText;
+            document.getElementById('explanation').textContent = explanationText;
+        }
+
+        function highlightBars(indices, className) {
+            // Clear previous highlights
+            document.querySelectorAll('.bar').forEach(bar => {
+                bar.className = 'bar';
+            });
+
+            // Add new highlights
+            indices.forEach(index => {
+                const bar = document.getElementById(`bar-${index}`);
+                if (bar) {
+                    bar.classList.add(className);
+                }
+            });
+        }
+
+        function highlightTreeNode(nodeId, className) {
+            const node = document.getElementById(nodeId);
+            if (node) {
+                node.className = `tree-node ${className}`;
+            }
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function merge(left, right, leftStart, rightStart) {
+            const result = [];
+            let i = 0, j = 0;
+
+            merges++;
+            updateStats();
+            highlightCodeLine(17);
+
+            updateInfo(
+                `Step ${++steps}: Merging arrays [${left.join(', ')}] and [${right.join(', ')}]`,
+                `Now we merge two sorted subarrays. We compare elements from both arrays and take the smaller one first.`
+            );
+
+            // Highlight the arrays being merged
+            const leftIndices = left.map((_, idx) => leftStart + idx);
+            const rightIndices = right.map((_, idx) => rightStart + idx);
+
+            highlightBars(leftIndices, 'left-half');
+            setTimeout(() => {
+                highlightBars(rightIndices, 'right-half');
+            }, 300);
+
+            await sleep(1200);
+
+            // Merge process
+            while (i < left.length && j < right.length) {
+                comparisons++;
+                updateStats();
+                highlightCodeLine(22);
+
+                highlightBars([leftStart + i, rightStart + j], 'merging');
+
+                if (left[i] <= right[j]) {
+                    result.push(left[i]);
+                    updateInfo(
+                        `Comparing ${left[i]} ≤ ${right[j]}: Taking ${left[i]} from left array`,
+                        `${left[i]} is smaller or equal, so we add it to our result and move to the next element in the left array.`
+                    );
+                    i++;
+                } else {
+                    result.push(right[j]);
+                    updateInfo(
+                        `Comparing ${left[i]} > ${right[j]}: Taking ${right[j]} from right array`,
+                        `${right[j]} is smaller, so we add it to our result and move to the next element in the right array.`
+                    );
+                    j++;
+                }
+
+                await sleep(1000);
+            }
+
+            // Add remaining elements
+            while (i < left.length) {
+                highlightCodeLine(31);
+                result.push(left[i]);
+                updateInfo(
+                    `Adding remaining element ${left[i]} from left array`,
+                    `All elements from the right array have been processed. Adding remaining elements from the left array.`
+                );
+                i++;
+                await sleep(800);
+            }
+
+            while (j < right.length) {
+                highlightCodeLine(36);
+                result.push(right[j]);
+                updateInfo(
+                    `Adding remaining element ${right[j]} from right array`,
+                    `All elements from the left array have been processed. Adding remaining elements from the right array.`
+                );
+                j++;
+                await sleep(800);
+            }
+
+            // Update the original array with merged result
+            for (let k = 0; k < result.length; k++) {
+                array[leftStart + k] = result[k];
+            }
+
+            renderArray();
+            highlightBars([...Array(result.length).keys()].map(k => leftStart + k), 'sorted');
+
+            updateInfo(
+                `Merge complete: [${result.join(', ')}]`,
+                `Successfully merged two sorted subarrays into one larger sorted subarray. This will be used in the next level of merging.`
+            );
+
+            await sleep(1000);
+            return result;
+        }
+
+        async function mergeSort(arr, start, end, depth = 0) {
+            if (arr.length <= 1) {
+                highlightCodeLine(2);
+                updateInfo(
+                    `Base case reached: [${arr.join(', ')}]`,
+                    `Subarray has 0 or 1 element, so it's already sorted.`
+                );
+                await sleep(700);
+                return arr.slice();
+            }
+
+            highlightCodeLine(7);
+            const mid = Math.floor(arr.length / 2);
+            const left_half = arr.slice(0, mid);
+            const right_half = arr.slice(mid);
+
+            // Highlight recursion tree nodes if present
+            if (depth === 0) {
+                highlightTreeNode('level0', 'dividing');
+            } else if (depth === 1) {
+                highlightTreeNode(start === 0 ? 'level1-1' : 'level1-2', 'dividing');
+            } else if (depth === 2) {
+                const nodeMap = [ 'level2-1', 'level2-2', 'level2-3', 'level2-4' ];
+                const idx = start / (array.length / 4);
+                highlightTreeNode(nodeMap[Math.floor(idx)], 'dividing');
+            }
+
+            updateInfo(
+                `Step ${++steps}: Dividing array [${arr.join(', ')}]`,
+                `Splitting the array into two halves for recursive sorting.`
+            );
+            await sleep(1000);
+
+            // Recursively sort both halves
+            const left_sorted = await mergeSort(left_half, start, start + mid, depth + 1);
+            const right_sorted = await mergeSort(right_half, start + mid, end, depth + 1);
+
+            // Merge the sorted halves
+            const merged = await merge(left_sorted, right_sorted, start, start + mid);
+            return merged;
+        }
+
+        async function startSort() {
+            if (isRunning) return;
+            isRunning = true;
+            document.getElementById('sortBtn').disabled = true;
+            steps = 0;
+            comparisons = 0;
+            merges = 0;
+            updateStats();
+            updateInfo('Starting MergeSort...', 'The sorting process has begun.');
+            const sorted = await mergeSort(array.slice(), 0, array.length);
+            // Mark all bars as sorted
+            highlightBars([...Array(array.length).keys()], 'sorted');
+            updateInfo('Sorting Complete!', 'The array is now fully sorted.');
+            isRunning = false;
+        }
+
+        function goBack() {
+            window.location.href = '../../index.html';
+        }
+
+        // Initialize with a random array on page load
+        window.onload = generateArray;
+    </script>
+</body>
+</html>
