@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96a48bba-1e0a-4ce5-9a30-59e69bd2d0d8" name="Changes" comment="merge sort update" />
+    <list default="true" id="96a48bba-1e0a-4ce5-9a30-59e69bd2d0d8" name="Changes" comment="binary search update" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -85,7 +85,7 @@
       <workItem from="1751826052465" duration="669000" />
       <workItem from="1751826817796" duration="2397000" />
       <workItem from="1752093871837" duration="4272000" />
-      <workItem from="1752233779223" duration="901000" />
+      <workItem from="1752233779223" duration="1247000" />
     </task>
     <task id="LOCAL-00001" summary="DSA algorithm visualizer">
       <option name="closed" value="true" />
@@ -143,7 +143,31 @@
       <option name="project" value="LOCAL" />
       <updated>1752234683976</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="merge sort update">
+      <option name="closed" value="true" />
+      <created>1752234803157</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1752234803157</updated>
+    </task>
+    <task id="LOCAL-00009" summary="merge sort update">
+      <option name="closed" value="true" />
+      <created>1752235000758</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1752235000758</updated>
+    </task>
+    <task id="LOCAL-00010" summary="binary search update">
+      <option name="closed" value="true" />
+      <created>1752235027191</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1752235027191</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -154,7 +178,8 @@
     <MESSAGE value="index location changed from public to root folder" />
     <MESSAGE value="quick sort update" />
     <MESSAGE value="merge sort update" />
-    <option name="LAST_COMMIT_MESSAGE" value="merge sort update" />
+    <MESSAGE value="binary search update" />
+    <option name="LAST_COMMIT_MESSAGE" value="binary search update" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/DSA$selection_sort.coverage" NAME="selection_sort Coverage Results" MODIFIED="1752094556631" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
