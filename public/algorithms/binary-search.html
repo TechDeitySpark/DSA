@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Binary Search Visualization</title>
-    <link rel="stylesheet" href="../css/binary-search.css">
+    <link rel="stylesheet" href="../algorithms/css/binary-search.css">
     <style>
         .main-content {
             display: grid;
@@ -75,7 +75,9 @@
         <div class="main-content">
             <div class="left-panel">
                 <h3 style="color: #4a5568; margin-bottom: 20px;">📊 Visual Representation</h3>
-                <div class="visualization" id="visualization"></div>
+                <div class="visualization" id="visualization">
+                    <noscript style="color:red;">JavaScript is required for the visualization to work.</noscript>
+                </div>
             </div>
             <div class="right-panel">
                 <h3 style="color: #4a5568; margin-bottom: 20px;">🐍 Python Implementation</h3>
@@ -144,7 +146,7 @@
         </div>
     </div>
     <button class="go-back" onclick="goBack()">← Back to Index</button>
-    <script src="../js/binary-search.js"></script>
+    <script src="../algorithms/js/binary-search.js"></script>
     <script>
         // Fallback: If JS is not loaded, show a warning
         if (!window.generateArray || !window.startSearch) {

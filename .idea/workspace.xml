@@ -85,7 +85,7 @@
       <workItem from="1751826052465" duration="669000" />
       <workItem from="1751826817796" duration="2397000" />
       <workItem from="1752093871837" duration="4272000" />
-      <workItem from="1752233779223" duration="1247000" />
+      <workItem from="1752233779223" duration="1610000" />
     </task>
     <task id="LOCAL-00001" summary="DSA algorithm visualizer">
       <option name="closed" value="true" />
@@ -167,7 +167,31 @@
       <option name="project" value="LOCAL" />
       <updated>1752235027191</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="binary search update">
+      <option name="closed" value="true" />
+      <created>1752235058144</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1752235058144</updated>
+    </task>
+    <task id="LOCAL-00012" summary="binary search update">
+      <option name="closed" value="true" />
+      <created>1752235189197</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1752235189197</updated>
+    </task>
+    <task id="LOCAL-00013" summary="binary search update">
+      <option name="closed" value="true" />
+      <created>1752235398951</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1752235398951</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
