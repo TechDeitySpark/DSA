@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Search Visualization</title>
+    <link rel="stylesheet" href="../css/binary-search.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Binary Search Visualization</h1>
+        <div class="controls">
+            <button class="btn-primary" onclick="generateArray()">Generate New Array</button>
+            <input type="number" id="searchInput" placeholder="Enter number to search" style="padding: 10px; border-radius: 8px; border: 1px solid #ccc; width: 180px; font-size: 16px;">
+            <button class="btn-secondary" onclick="startSearch()">Start Search</button>
+            <button class="btn-success" onclick="resetInfo()">Reset</button>
+        </div>
+        <div class="visualization" id="visualization"></div>
+        <div class="info-panel">
+            <div class="step-info" id="stepInfo">Ready! Enter a number and click 'Start Search'.</div>
+            <div class="explanation" id="explanation">
+                Binary Search works by repeatedly dividing the sorted array in half, comparing the target value to the middle element.
+            </div>
+        </div>
+        <div class="algorithm-info">
+            <h3>🧠 How Binary Search Works:</h3>
+            <ul>
+                <li><strong>Precondition:</strong> Array must be sorted</li>
+                <li><strong>Divide:</strong> Find the middle element</li>
+                <li><strong>Compare:</strong> If target equals middle, done. If less, search left. If more, search right.</li>
+                <li><strong>Repeat:</strong> Continue until found or subarray is empty</li>
+            </ul>
+            <br>
+            <h3>🚀 Performance:</h3>
+            <ul>
+                <li><strong>Time Complexity:</strong> O(log n)</li>
+                <li><strong>Space Complexity:</strong> O(1) (iterative)</li>
+            </ul>
+        </div>
+    </div>
+    <button class="go-back" onclick="goBack()">← Back to Index</button>
+    <script src="../js/binary-search.js"></script>
+</body>
+</html>
